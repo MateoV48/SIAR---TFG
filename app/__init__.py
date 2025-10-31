@@ -1,0 +1,54 @@
+# Archivo: /app/__init__.py
+
+from flask import Flask
+from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
+
+# 1. Inicializamos las extensiones (sin vincularlas a una app aún)
+db = SQLAlchemy()
+migrate = Migrate()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
+
+# Configuración de Flask-Login
+# Le dice a Flask-Login cuál es la vista (ruta) de login
+login_manager.login_view = 'auth.login' 
+# Mensaje que muestra si un usuario no logueado intenta entrar a una pág. protegida
+login_manager.login_message = 'Por favor, inicie sesión para acceder a esta página.'
+login_manager.login_message_category = 'warning' # Categoría para Bootstrap/CSS
+
+
+def create_app(config_class=Config):
+    """
+    Patrón Application Factory: Crea y configura la instancia de la app.
+    """
+    # 2. Creamos la instancia de la aplicación Flask
+    app = Flask(__name__)
+    
+    # 3. Cargamos la configuración desde la clase Config
+    app.config.from_object(config_class)
+
+    # 4. Vinculamos las extensiones con nuestra app
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+
+    # 5. Registramos los "Blueprints" (nuestros módulos de rutas)
+    # (Esto dará error ahora, pero lo crearemos en el sig. paso)
+    
+    from app.main.routes import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    # Registrar blueprint de autenticación sin prefijo para que /login esté en raíz
+    from app.auth.routes import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint)
+    
+    # (Por ahora, importaremos las rutas de forma más simple)
+    
+    # (Modelos se importarán cuando existan para evitar errores de importación)
+
+    return app
