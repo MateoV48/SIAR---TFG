@@ -40,15 +40,20 @@ def create_app(config_class=Config):
     # 5. Registramos los "Blueprints" (nuestros módulos de rutas)
     # (Esto dará error ahora, pero lo crearemos en el sig. paso)
     
-    from app.main.routes import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
-    # Registrar blueprint de autenticación sin prefijo para que /login esté en raíz
     from app.auth.routes import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(auth_blueprint, url_prefix='/') 
     
-    # (Por ahora, importaremos las rutas de forma más simple)
+    from app.main.routes import main as main_blueprint
+    app.register_blueprint(main_blueprint, url_prefix='/')
     
-    # (Modelos se importarán cuando existan para evitar errores de importación)
+    from app.alumnos.routes import alumnos as alumnos_blueprint
+    app.register_blueprint(alumnos_blueprint, url_prefix='/')
+    
+    from app.reportes.routes import reportes as reportes_blueprint
+    app.register_blueprint(reportes_blueprint, url_prefix='/')
+
+    # 6. --- IMPORTAR MODELOS ---
+    # ESTA LÍNEA ES ESENCIAL. Si falta, el error 'Missing user_loader' ocurre.
+    from app import models 
 
     return app

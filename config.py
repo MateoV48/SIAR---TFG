@@ -22,3 +22,20 @@ class Config:
     
     # Desactiva una advertencia de SQLAlchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # Modo debug (desactivado por defecto en producción)
+    DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+
+
+class ProductionConfig(Config):
+    """Configuración específica para producción."""
+    DEBUG = False
+    # En producción, siempre usa la URL de la variable de entorno
+    # Si no está configurada, SQLAlchemy dará un error claro al intentar conectar
+    # Nota: Asegúrate de configurar DATABASE_URL y SECRET_KEY como variables de entorno
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+
+
+class DevelopmentConfig(Config):
+    """Configuración específica para desarrollo."""
+    DEBUG = True

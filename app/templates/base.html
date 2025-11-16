@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Sistema de Soporte a la Decisión{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      body { background-color: #f8fafc; }
+      .navbar { background-color: #2563eb; }
+      .navbar-brand, .nav-link { 
+        color: #fff !important; 
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(0, 0, 0, 0.5), 1px -1px 2px rgba(0, 0, 0, 0.5), -1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+      .nav-link:hover { 
+        color: #e0e7ff !important; 
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(0, 0, 0, 0.5), 1px -1px 2px rgba(0, 0, 0, 0.5), -1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+      .page-title { font-weight: 800; font-size: 1.6rem; margin: 16px 0; color: #0f172a; }
+      .panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; }
+      .badge-alto { background-color: #ef4444; color: white; }
+      .badge-medio { background-color: #f59e0b; color: #111827; }
+      .badge-bajo { background-color: #22c55e; color: white; }
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo-container:hover {
+        text-decoration: none;
+      }
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+      }
+      .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(0, 0, 0, 0.5), 1px -1px 2px rgba(0, 0, 0, 0.5), -1px 1px 2px rgba(0, 0, 0, 0.5);
+        letter-spacing: 1px;
+      }
+      .footer {
+        background-color: #1e293b;
+        color: #cbd5e1;
+        padding: 20px 0;
+        margin-top: 40px;
+        border-top: 1px solid #334155;
+      }
+      .footer-content {
+        text-align: center;
+        font-size: 0.9rem;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .main-content {
+        flex: 1;
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand logo-container" href="{{ url_for('main.dashboard') }}">
+          <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fondo circular -->
+            <circle cx="50" cy="50" r="48" fill="#ffffff" opacity="0.15"/>
+            <!-- Gráfico de barras representando análisis -->
+            <rect x="25" y="60" width="12" height="25" fill="#ffffff" rx="2"/>
+            <rect x="42" y="50" width="12" height="35" fill="#ffffff" rx="2"/>
+            <rect x="59" y="40" width="12" height="45" fill="#ffffff" rx="2"/>
+            <rect x="76" y="30" width="12" height="55" fill="#ffffff" rx="2"/>
+            <!-- Icono de tendencia/analítica -->
+            <path d="M 20 70 L 35 55 L 50 60 L 65 45 L 80 50" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="logo-text">SIAR</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('alumnos.gestion') }}">Gestión de Alumnos</a>
+            </li>
+            {% if current_user.rol == 'Admin' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.usuarios') }}">Usuarios</a>
+            </li>
+            {% endif %}
+            {% endif %}
+          </ul>
+          <ul class="navbar-nav">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                {{ current_user.nombre }} {{ current_user.apellido }}
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+              </ul>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <div class="container py-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <p class="mb-0">&copy; <span id="current-year"></span> SIAR. Todos los derechos reservados.</p>
+          <p class="mb-0 mt-2" style="font-size: 0.85rem; color: #94a3b8;">Desarrollado por Mateo Villarroel para la Licenciatura en Informática - Universidad Siglo 21</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Actualizar el año actual en el copyright
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>
+
+

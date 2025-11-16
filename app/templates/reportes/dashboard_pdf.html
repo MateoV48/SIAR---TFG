@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte General - Dashboard de Riesgo Académico</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1.5cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            line-height: 1.4;
+            color: #333;
+        }
+        .header {
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 22px;
+        }
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .stats {
+            display: table;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            display: table-cell;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ecf0f1;
+            background-color: #f8f9fa;
+        }
+        .stat-box .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-box .label {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .stat-box.alto .number { color: #e74c3c; }
+        .stat-box.medio .number { color: #f39c12; }
+        .stat-box.bajo .number { color: #27ae60; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 9px;
+        }
+        thead {
+            background-color: #34495e;
+            color: white;
+        }
+        th {
+            padding: 8px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 9px;
+        }
+        .badge-alto {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .badge-medio {
+            background-color: #f39c12;
+            color: white;
+        }
+        .badge-bajo {
+            background-color: #27ae60;
+            color: white;
+        }
+        .badge-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+            font-size: 9px;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Reporte General - Análisis de Riesgo Académico</h1>
+        <div class="subtitle">Generado por: {{ usuario }} el {{ fecha_generacion.strftime('%d/%m/%Y a las %H:%M') }}</div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="number">{{ estadisticas.total }}</div>
+            <div class="label">Total de Alumnos</div>
+        </div>
+        <div class="stat-box alto">
+            <div class="number">{{ estadisticas.alto }}</div>
+            <div class="label">Riesgo Alto</div>
+        </div>
+        <div class="stat-box medio">
+            <div class="number">{{ estadisticas.medio }}</div>
+            <div class="label">Riesgo Medio</div>
+        </div>
+        <div class="stat-box bajo">
+            <div class="number">{{ estadisticas.bajo }}</div>
+            <div class="label">Riesgo Bajo</div>
+        </div>
+        {% if estadisticas.sin_analizar > 0 %}
+        <div class="stat-box">
+            <div class="number">{{ estadisticas.sin_analizar }}</div>
+            <div class="label">Sin Analizar</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>Curso</th>
+                <th>Nivel de Riesgo</th>
+                <th>Precisión (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in alumnos %}
+            <tr>
+                <td>{{ a.apellido }}</td>
+                <td>{{ a.nombre }}</td>
+                <td>{{ a.curso }}</td>
+                <td>
+                    {% if a.riesgo == 'Alto' %}
+                        <span class="badge badge-alto">{{ a.riesgo }}</span>
+                    {% elif a.riesgo == 'Medio' %}
+                        <span class="badge badge-medio">{{ a.riesgo }}</span>
+                    {% elif a.riesgo == 'Bajo' %}
+                        <span class="badge badge-bajo">{{ a.riesgo }}</span>
+                    {% else %}
+                        <span class="badge badge-secondary">{{ a.riesgo }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ a.precision }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Este reporte fue generado automáticamente por el Sistema de Análisis de Riesgo Académico</p>
+        <p>Reporte generado el {{ fecha_generacion.strftime('%d/%m/%Y a las %H:%M:%S') }}</p>
+    </div>
+</body>
+</html>
+

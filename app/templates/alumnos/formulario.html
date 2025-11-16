@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="page-title">{{ titulo }}</div>
+
+<div class="panel">
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="nombre" class="form-label">Nombre *</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" 
+               value="{{ alumno.nombre if alumno else '' }}" required>
+      </div>
+      <div class="col-md-6">
+        <label for="apellido" class="form-label">Apellido *</label>
+        <input type="text" class="form-control" id="apellido" name="apellido" 
+               value="{{ alumno.apellido if alumno else '' }}" required>
+      </div>
+      <div class="col-md-6">
+        <label for="dni" class="form-label">DNI</label>
+        <input type="text" class="form-control" id="dni" name="dni" 
+               value="{{ alumno.dni if alumno else '' }}">
+      </div>
+      <div class="col-md-6">
+        <label for="curso_id" class="form-label">Curso *</label>
+        <select class="form-select" id="curso_id" name="curso_id" required>
+          <option value="">Seleccione un curso</option>
+          {% for curso in cursos %}
+            <option value="{{ curso.id }}" {% if alumno and alumno.curso_id == curso.id %}selected{% endif %}>
+              {{ curso.nombre }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="promedio_g2" class="form-label">Promedio G2</label>
+        <input type="number" step="0.1" min="0" max="10" class="form-control" id="promedio_g2" name="promedio_g2" 
+               value="{{ alumno.promedio_g2 if alumno and alumno.promedio_g2 else '' }}">
+      </div>
+      <div class="col-md-6">
+        <label for="materias_previas" class="form-label">Materias Previas</label>
+        <input type="number" min="0" class="form-control" id="materias_previas" name="materias_previas" 
+               value="{{ alumno.materias_previas if alumno else 0 }}" required>
+      </div>
+      <div class="col-md-6">
+        <label for="inasistencias" class="form-label">Inasistencias</label>
+        <input type="number" min="0" class="form-control" id="inasistencias" name="inasistencias" 
+               value="{{ alumno.inasistencias if alumno else 0 }}" required>
+      </div>
+      <div class="col-md-6">
+        <label for="tiempo_estudio_semanal" class="form-label">Tiempo de Estudio Semanal</label>
+        <select class="form-select" id="tiempo_estudio_semanal" name="tiempo_estudio_semanal">
+          <option value="">Seleccione...</option>
+          <option value="< 2 horas" {% if alumno and alumno.tiempo_estudio_semanal == '< 2 horas' %}selected{% endif %}>Menos de 2 horas</option>
+          <option value="2-5 horas" {% if alumno and alumno.tiempo_estudio_semanal == '2-5 horas' %}selected{% endif %}>2-5 horas</option>
+          <option value="5-10 horas" {% if alumno and alumno.tiempo_estudio_semanal == '5-10 horas' %}selected{% endif %}>5-10 horas</option>
+          <option value="> 10 horas" {% if alumno and alumno.tiempo_estudio_semanal == '> 10 horas' %}selected{% endif %}>Más de 10 horas</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+

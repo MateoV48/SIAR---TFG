@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte por Curso - {{ curso.nombre }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #333;
+        }
+        .header {
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 22px;
+        }
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .stats {
+            display: table;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .stat-box {
+            display: table-cell;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ecf0f1;
+            background-color: #f8f9fa;
+        }
+        .stat-box .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-box .label {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .stat-box.alto .number { color: #e74c3c; }
+        .stat-box.medio .number { color: #f39c12; }
+        .stat-box.bajo .number { color: #27ae60; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 10px;
+        }
+        thead {
+            background-color: #34495e;
+            color: white;
+        }
+        th {
+            padding: 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        .badge-alto {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .badge-medio {
+            background-color: #f39c12;
+            color: white;
+        }
+        .badge-bajo {
+            background-color: #27ae60;
+            color: white;
+        }
+        .badge-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        .factores {
+            font-size: 9px;
+            color: #555;
+            margin-top: 3px;
+        }
+        .recomendacion {
+            font-size: 9px;
+            font-style: italic;
+            color: #666;
+            margin-top: 3px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+            font-size: 10px;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Reporte de Análisis de Riesgo por Curso</h1>
+        <div class="subtitle">Curso: {{ curso.nombre }}</div>
+        <div class="subtitle">Generado por: {{ usuario }} el {{ fecha_generacion.strftime('%d/%m/%Y a las %H:%M') }}</div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="number">{{ estadisticas.total }}</div>
+            <div class="label">Total de Alumnos</div>
+        </div>
+        <div class="stat-box alto">
+            <div class="number">{{ estadisticas.alto }}</div>
+            <div class="label">Riesgo Alto</div>
+        </div>
+        <div class="stat-box medio">
+            <div class="number">{{ estadisticas.medio }}</div>
+            <div class="label">Riesgo Medio</div>
+        </div>
+        <div class="stat-box bajo">
+            <div class="number">{{ estadisticas.bajo }}</div>
+            <div class="label">Riesgo Bajo</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Promedio G2</th>
+                <th>Materias Previas</th>
+                <th>Inasistencias</th>
+                <th>Riesgo</th>
+                <th>Precisión (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alumno in alumnos %}
+            <tr>
+                <td>{{ alumno.apellido }}</td>
+                <td>{{ alumno.nombre }}</td>
+                <td>{{ alumno.dni }}</td>
+                <td>{{ "%.2f"|format(alumno.promedio_g2) }}</td>
+                <td>{{ alumno.materias_previas }}</td>
+                <td>{{ alumno.inasistencias }}</td>
+                <td>
+                    {% if alumno.riesgo == 'Alto' %}
+                        <span class="badge badge-alto">{{ alumno.riesgo }}</span>
+                    {% elif alumno.riesgo == 'Medio' %}
+                        <span class="badge badge-medio">{{ alumno.riesgo }}</span>
+                    {% elif alumno.riesgo == 'Bajo' %}
+                        <span class="badge badge-bajo">{{ alumno.riesgo }}</span>
+                    {% else %}
+                        <span class="badge badge-secondary">{{ alumno.riesgo }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ alumno.precision }}%</td>
+            </tr>
+            {% if alumno.factores_riesgo %}
+            <tr style="background-color: #fff3cd;">
+                <td colspan="8" class="factores">
+                    <strong>Factores de riesgo:</strong> 
+                    {{ alumno.factores_riesgo|join('; ') }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if alumno.recomendacion and alumno.recomendacion != 'Sin recomendación' %}
+            <tr style="background-color: #d1ecf1;">
+                <td colspan="8" class="recomendacion">
+                    <strong>Recomendación:</strong> {{ alumno.recomendacion }}
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Este reporte fue generado automáticamente por el Sistema de Análisis de Riesgo Académico</p>
+        <p>Reporte generado el {{ fecha_generacion.strftime('%d/%m/%Y a las %H:%M:%S') }}</p>
+    </div>
+</body>
+</html>
+

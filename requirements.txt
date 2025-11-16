@@ -16,6 +16,10 @@ flask-bcrypt          # Para encriptar las contraseñas
 # --- Motor de Análisis (Tu elección) ---
 pandas                # [cite: 108]
 scikit-learn          # [cite: 108]
+joblib                # Para guardar y cargar modelos entrenados
 
 # --- Reportes (Tu requisito RF-07) ---
 WeasyPrint            # Para exportar vistas HTML a PDF
+
+# --- Servidor de Producción ---
+gunicorn              # Servidor WSGI para producción (NO usar en desarrollo)
