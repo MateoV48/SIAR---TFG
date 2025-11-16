@@ -93,6 +93,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('alumnos.gestion') }}">Gestión de Alumnos</a>
             </li>
+            {% if current_user.rol in ['Admin', 'Docente', 'Preceptor'] %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('reportes.mis_cursos') }}">Reportes</a>
+            </li>
+            {% endif %}
             {% if current_user.rol == 'Admin' %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('main.usuarios') }}">Usuarios</a>

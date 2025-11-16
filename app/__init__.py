@@ -30,6 +30,27 @@ def create_app(config_class=Config):
     
     # 3. Cargamos la configuración desde la clase Config
     app.config.from_object(config_class)
+    
+    # Solución para problema de encoding en Windows con psycopg2
+    # Asegurar que SQLALCHEMY_DATABASE_URI está en formato correcto
+    if 'SQLALCHEMY_DATABASE_URI' in app.config:
+        db_url = app.config['SQLALCHEMY_DATABASE_URI']
+        # Limpiar cualquier problema de encoding
+        if isinstance(db_url, bytes):
+            try:
+                db_url = db_url.decode('utf-8')
+            except UnicodeDecodeError:
+                db_url = db_url.decode('latin-1', errors='replace')
+        # Asegurar que es un string válido
+        db_url = str(db_url).strip()
+        # Re-encode para limpiar caracteres problemáticos
+        try:
+            # Convertir a bytes ASCII y de vuelta para limpiar
+            db_url_clean = db_url.encode('ascii', errors='ignore').decode('ascii')
+            if db_url_clean.startswith('postgresql://'):
+                app.config['SQLALCHEMY_DATABASE_URI'] = db_url_clean
+        except:
+            pass
 
     # 4. Vinculamos las extensiones con nuestra app
     db.init_app(app)

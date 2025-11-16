@@ -11,7 +11,7 @@ psycopg2-binary==2.9.11
 # Machine Learning y análisis de datos
 scikit-learn==1.4.0
 pandas==2.2.0
-numpy==2.3.4
+numpy==1.26.4
 
 # Generación de PDFs
 weasyprint==66.0

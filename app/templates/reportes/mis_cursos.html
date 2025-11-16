@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Mis Cursos - Reportes{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1><i class="fas fa-file-pdf"></i> Mis Cursos - Exportar Reportes</h1>
+            <p class="text-muted">Selecciona un curso para descargar su reporte en PDF o CSV</p>
+        </div>
+    </div>
+
+    {% if cursos %}
+        <div class="row">
+            {% for curso in cursos %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">{{ curso.nombre }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <strong>Total de alumnos:</strong> {{ curso.total_alumnos }}<br>
+                            <strong>Analizados:</strong> {{ curso.alumnos_analizados }} / {{ curso.total_alumnos }}<br>
+                        </p>
+                        
+                        {% if curso.riesgo_alto > 0 or curso.riesgo_medio > 0 %}
+                            <div class="alert alert-warning py-2 mb-3">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <strong>Alertas:</strong>
+                                {% if curso.riesgo_alto > 0 %}
+                                    <span class="badge badge-danger">{{ curso.riesgo_alto }} Alto riesgo</span>
+                                {% endif %}
+                                {% if curso.riesgo_medio > 0 %}
+                                    <span class="badge badge-warning">{{ curso.riesgo_medio }} Medio riesgo</span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        <div class="btn-group-vertical w-100" role="group">
+                            <a href="{{ url_for('reportes.curso_pdf', curso_id=curso.id) }}" class="btn btn-outline-danger btn-sm" title="Descargar PDF">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </a>
+                            <a href="{{ url_for('reportes.curso_csv', curso_id=curso.id) }}" class="btn btn-outline-success btn-sm" title="Descargar CSV">
+                                <i class="fas fa-file-csv"></i> CSV
+                            </a>
+                            <a href="{{ url_for('main.dashboard', curso=curso.nombre) }}" class="btn btn-outline-primary btn-sm" title="Ver detalles">
+                                <i class="fas fa-eye"></i> Ver Detalles
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <strong>Sin cursos disponibles</strong> - Por favor, crea cursos primero.
+        </div>
+    {% endif %}
+
+    <!-- Botón para volver al dashboard -->
+    <div class="mt-4 mb-4">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver al Dashboard
+        </a>
+    </div>
+</div>
+
+<style>
+    .btn-group-vertical .btn {
+        border: 1px solid #dee2e6 !important;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-group-vertical .btn:hover {
+        background-color: #f8f9fa !important;
+        border-color: #007bff !important;
+    }
+    
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    .card-header {
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}

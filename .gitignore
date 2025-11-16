@@ -71,7 +71,17 @@ GUIA_CONFIGURACION.md
 GUIA_HOSTING_WEB.md
 SEGURIDAD.md
 ELIMINAR_ARCHIVOS_SENSIBLES.md
+SOLUCION_ENCODING.md
 limpiar_repositorio.ps1
 render.yaml
+
+# Scripts de setup/migración (uso local, no necesarios en producción)
+setup_and_run.ps1
+ejecutar_migraciones.ps1
+ejecutar_migraciones_seguro.ps1
+fix_psycopg2_encoding.py
+migrar_db.py
+migrar_directo.py
+mover_proyecto.ps1
 
 
