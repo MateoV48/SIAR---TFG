@@ -1,25 +1,19 @@
-# Archivo: /requirements.txt
-
-# --- Core de Flask ---
-flask
-python-dotenv         # Para leer el archivo .env con configuraciones
-
-# --- Base de Datos (Tu elección: PostgreSQL) ---
-flask-sqlalchemy      # ORM para manejar la BBDD
-flask-migrate         # Para gestionar cambios en el modelo de datos
-psycopg2-binary       # El "driver" que conecta Python con PostgreSQL
-
-# --- Autenticación y Seguridad (Tu requisito de 'bcrypt') ---
-flask-login           # Maneja las sesiones de usuario (login/logout)
-flask-bcrypt          # Para encriptar las contraseñas 
-
-# --- Motor de Análisis (Tu elección) ---
-pandas                # [cite: 108]
-scikit-learn          # [cite: 108]
-joblib                # Para guardar y cargar modelos entrenados
-
-# --- Reportes (Tu requisito RF-07) ---
-WeasyPrint            # Para exportar vistas HTML a PDF
-
-# --- Servidor de Producción ---
-gunicorn              # Servidor WSGI para producción (NO usar en desarrollo)
+Brotli==1.1.0
+numpy==2.3.4
+packaging==25.0
+pillow==12.0.0
+psycopg2-binary==2.9.11
+pycparser==2.23
+pydyf==0.11.0
+pyphen==0.17.2
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.1
+pytz==2025.2
+six==1.17.0
+threadpoolctl==3.6.0
+tinycss2==1.4.0
+tinyhtml5==2.0.0
+typing_extensions==4.15.0
+tzdata==2025.2
+webencodings==0.5.1
+zopfli==0.2.3.post1

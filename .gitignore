@@ -26,6 +26,7 @@ env/
 ENV/
 env.bak/
 venv.bak/
+.venv/  # Añadido para asegurar exclusión de entornos virtuales y archivos temporales
 
 # Flask
 instance/
