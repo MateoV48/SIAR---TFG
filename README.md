@@ -1,4 +1,6 @@
-# AsistenciaParaTFG
+# SIAR - TFG
+
+**Sistema Inteligente de Análisis de Riesgo Académico**
 
 Aplicación web para gestión y análisis de riesgo académico de alumnos, desarrollada en Flask con integración de Machine Learning y generación de reportes en PDF.
 
@@ -6,8 +8,8 @@ Aplicación web para gestión y análisis de riesgo académico de alumnos, desar
 
 1. **Clona el repositorio:**
    ```pwsh
-   git clone https://github.com/MateoV48/AsistenciaParaTFG.git
-   cd AsistenciaParaTFG
+   git clone https://github.com/MateoV48/SIAR-TFG.git
+   cd SIAR-TFG
    ```
 
 2. **Crea y activa el entorno virtual:**
@@ -56,7 +58,7 @@ Aplicación web para gestión y análisis de riesgo académico de alumnos, desar
 
 Para demostrar la existencia y funcionalidad del prototipo, se ha subido el código fuente completo a un repositorio público en GitHub:
 
-[https://github.com/MateoV48/AsistenciaParaTFG](https://github.com/MateoV48/AsistenciaParaTFG)
+[https://github.com/MateoV48/SIAR-TFG](https://github.com/MateoV48/SIAR-TFG)
 
 El repositorio incluye todos los archivos necesarios, un instructivo detallado (`README.md`) y el listado de dependencias (`requirements.txt`).  
 Cualquier persona puede clonar el proyecto y ejecutarlo siguiendo los pasos indicados, garantizando la reproducibilidad y transparencia del desarrollo.
