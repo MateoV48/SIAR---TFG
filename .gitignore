@@ -33,7 +33,7 @@ instance/
 .webassets-cache
 
 # Environment variables
-.ENV
+.env
 .env.local
 .env.*.local
 
