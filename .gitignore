@@ -66,4 +66,12 @@ models/
 # Alembic
 # (migrations/ está versionado, pero puedes ignorar versiones específicas si quieres)
 
+# Guías personales (solo para uso local, no subir al repositorio)
+GUIA_CONFIGURACION.md
+GUIA_HOSTING_WEB.md
+SEGURIDAD.md
+ELIMINAR_ARCHIVOS_SENSIBLES.md
+limpiar_repositorio.ps1
+render.yaml
+
 
