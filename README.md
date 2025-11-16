@@ -54,11 +54,3 @@ Aplicación web para gestión y análisis de riesgo académico de alumnos, desar
 - `migrations/` — Migraciones de base de datos
 - `templates/` — Plantillas HTML
 
-## Demo del Prototipo
-
-Para demostrar la existencia y funcionalidad del prototipo, se ha subido el código fuente completo a un repositorio público en GitHub:
-
-[https://github.com/MateoV48/SIAR-TFG](https://github.com/MateoV48/SIAR-TFG)
-
-El repositorio incluye todos los archivos necesarios, un instructivo detallado (`README.md`) y el listado de dependencias (`requirements.txt`).  
-Cualquier persona puede clonar el proyecto y ejecutarlo siguiendo los pasos indicados, garantizando la reproducibilidad y transparencia del desarrollo.

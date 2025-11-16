@@ -26,10 +26,17 @@ def get_engine():
 
 def get_engine_url():
     try:
-        return get_engine().url.render_as_string(hide_password=False).replace(
-            '%', '%%')
+        url = get_engine().url.render_as_string(hide_password=False)
+        # Asegurar que la URL está en UTF-8
+        if isinstance(url, bytes):
+            url = url.decode('utf-8', errors='replace')
+        return url.replace('%', '%%')
     except AttributeError:
-        return str(get_engine().url).replace('%', '%%')
+        url = str(get_engine().url)
+        # Asegurar que la URL está en UTF-8
+        if isinstance(url, bytes):
+            url = url.decode('utf-8', errors='replace')
+        return url.replace('%', '%%')
 
 
 # add your model's MetaData object here
