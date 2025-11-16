@@ -1,13 +1,32 @@
-Brotli==1.1.0
+# Flask y extensiones principales
+Flask==3.0.0
+flask-sqlalchemy==3.1.1
+flask-migrate==4.0.5
+flask-login==0.6.3
+flask-bcrypt==1.0.1
+
+# Base de datos
+psycopg2-binary==2.9.11
+
+# Machine Learning y análisis de datos
+scikit-learn==1.4.0
+pandas==2.2.0
 numpy==2.3.4
+
+# Generación de PDFs
+weasyprint==66.0
+
+# Utilidades
+python-dotenv==1.2.1
+
+# Dependencias secundarias (instaladas automáticamente)
+Brotli==1.1.0
 packaging==25.0
 pillow==12.0.0
-psycopg2-binary==2.9.11
 pycparser==2.23
 pydyf==0.11.0
 pyphen==0.17.2
 python-dateutil==2.9.0.post0
-python-dotenv==1.2.1
 pytz==2025.2
 six==1.17.0
 threadpoolctl==3.6.0
